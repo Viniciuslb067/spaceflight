@@ -64,7 +64,7 @@ export const App = () => {
             <HStack w="100%" justifyContent="space-between">
             <Text>dd/mmm/yyyy</Text>
               <Button>
-                newSite
+                newSite⛵ 
               </Button>
             </HStack>
             <Text align="justify">
