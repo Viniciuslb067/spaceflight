@@ -6,7 +6,7 @@ type Articles = {
     imageUrl: string,
     newsSite: string,
     summary: string,
-    publishedAt: string,
+    publishedAt: Date,
     launches: [
       {
         id: string,
@@ -19,4 +19,17 @@ type Articles = {
         provider: string
       }
     ]
+}
+
+type CreateArticleOptions = {
+  data: Article;
+}
+
+type GetAllArticlesOptions = {
+  searchTerms?: {
+    title?: string;
+    order_by?: string;
+    take?: number;
+    skip?: number;
+  }
 }

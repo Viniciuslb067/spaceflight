@@ -12,24 +12,57 @@ import {
   ModalOverlay,
   Textarea,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { QueryClient, useMutation } from "react-query";
+import { createArticles } from "../../api";
+
+type CreateArticleForm = {
+  title: string;
+  newsSite: string;
+  summary: string;
+  url: string;
+  imageUrl: string;
+};
 
 export const CreateArticleModal = () => {
+  const toast = useToast();
+  const queryClient = new QueryClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { mutateAsync, isSuccess, isLoading } = useMutation("create-article", createArticles, {
+    onError: (err: any) => {
+      toast({
+        title: err || "Ocorreu um erro",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('articles');
+      toast({
+        title: "Artigo criado com sucesso",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      onClose();
+      reset();
+    },
+  });
 
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors },
   } = useForm();
 
-  const onSubmit = (values: any) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-      }, 3000);
-    });
+  const onSubmit = (values: CreateArticleForm) => {
+    mutateAsync({ data: values });
+    if (isSuccess) reset();
   };
 
   return (
@@ -44,8 +77,8 @@ export const CreateArticleModal = () => {
           <ModalHeader>Criar artigo</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={errors.name}>
+            <form onSubmit={handleSubmit(onSubmit as any)}>
+              <FormControl isInvalid={errors.title}>
                 <FormLabel htmlFor="title">Título</FormLabel>
                 <Input
                   id="title"
@@ -58,10 +91,10 @@ export const CreateArticleModal = () => {
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.name && errors.name.message}
+                  {errors.title && errors.title.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.name} mt="2">
+              <FormControl isInvalid={errors.newsSite} mt="2">
                 <FormLabel htmlFor="newsSite">Site de notícias</FormLabel>
                 <Input
                   id="newsSite"
@@ -74,11 +107,11 @@ export const CreateArticleModal = () => {
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.name && errors.name.message}
+                  {errors.newsSite && errors.newsSite.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.name} mt="2">
-                <FormLabel htmlFor="name">Sumário</FormLabel>
+              <FormControl isInvalid={errors.summary} mt="2">
+                <FormLabel htmlFor="summary">Sumário</FormLabel>
                 <Textarea
                   id="summary"
                   {...register("summary", {
@@ -90,10 +123,10 @@ export const CreateArticleModal = () => {
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.name && errors.name.message}
+                  {errors.summary && errors.summary.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.name} mt="2">
+              <FormControl isInvalid={errors.url} mt="2">
                 <FormLabel htmlFor="url">Url</FormLabel>
                 <Input
                   id="url"
@@ -106,11 +139,11 @@ export const CreateArticleModal = () => {
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.name && errors.name.message}
+                  {errors.url && errors.url.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.name} mt="2">
-                <FormLabel htmlFor="name">Url da imagem</FormLabel>
+              <FormControl isInvalid={errors.imageUrl} mt="2">
+                <FormLabel htmlFor="imageUrl">Url da imagem</FormLabel>
                 <Input
                   id="imageUrl"
                   {...register("imageUrl", {
@@ -122,14 +155,14 @@ export const CreateArticleModal = () => {
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.name && errors.name.message}
+                  {errors.imageUrl && errors.imageUrl.message}
                 </FormErrorMessage>
               </FormControl>
               <Button
                 mt={4}
                 bg="#302E53"
                 color="white"
-                isLoading={isSubmitting}
+                isLoading={isLoading}
                 type="submit"
               >
                 Enviar
