@@ -24,8 +24,10 @@ import { CreateArticleModal } from "./components/CreateArticleModal";
 import { useEffect, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import { queryClient } from "../../lib/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectValue, setSelectValue] = useState("");
   const debouncedFilter: string = useDebounce(searchTerm, 500);
@@ -143,7 +145,7 @@ export const Home = () => {
                     <Tag>{article.newsSite}</Tag>
                   </HStack>
                   <Text align="justify">{article.summary}</Text>
-                  <Button>Ver Mais</Button>
+                  <Button onClick={() => navigate(`/article/${article.id}`)}>Ver Mais</Button>
                 </VStack>
               </Stack>
             ))

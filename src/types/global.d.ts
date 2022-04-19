@@ -33,3 +33,7 @@ type GetAllArticlesOptions = {
     skip?: number;
   }
 }
+
+type GetArticleOptions = {
+  id: number;
+}
