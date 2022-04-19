@@ -18,6 +18,7 @@ import { useQuery } from 'react-query';
 import { getAllArticles } from './api';
 
 import dayjs from 'dayjs';
+import { CreateArticleModal } from './components/CreateArticleModal';
 
 export const Home = () => {
   const { data } = useQuery('articles', async () => await getAllArticles());
@@ -41,7 +42,7 @@ export const Home = () => {
             <option>Mais novas</option>
           </Select>
         </Stack>
-        <Button>Criar novo artigo</Button>
+        <CreateArticleModal />
       </HStack>
       <Stack
         alignItems="center"
@@ -57,18 +58,20 @@ export const Home = () => {
         <Text fontSize="2xl">Space Flight News</Text>
       </Stack>
       <Stack px="72" pt="12" w="100%" alignItems="center" justifyContent="center" spacing="16">
-        {data?.map((article) => {
+        {data?.map((article, index) => {
           return (
             <Stack
               w="100%"
               key={article.id}
-              direction={article.id % 2 === 0 ? 'row-reverse' : 'row'}
+              direction={index % 2 === 0 ? 'row-reverse' : 'row'}
               alignItems="flex-start"
               spacing="10"
             >
-              <Box boxSize="lg" h="min-content">
+              <Box w="100%" maxH="180px" boxSize="lg" h="min-content">
                 <Image
-                  objectFit="contain"
+                  objectFit="cover"
+                  minH="180px"
+                  maxH="180px"
                   src={article.imageUrl}
                   fallbackSrc="https://149361159.v2.pressablecdn.com/wp-content/uploads/2021/01/placeholder.png"
                 />
