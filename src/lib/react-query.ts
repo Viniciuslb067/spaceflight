@@ -1,3 +1,10 @@
-import { QueryClient } from "react-query";
+import { DefaultOptions, QueryClient } from "react-query";
 
-export const queryClient = new QueryClient();
+const queryConfig: DefaultOptions = {
+  queries: {
+    refetchOnWindowFocus: false,
+    retry: false,
+  },
+};
+
+export const queryClient = new QueryClient({ defaultOptions: queryConfig });

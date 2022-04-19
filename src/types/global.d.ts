@@ -1,19 +1,19 @@
 type Articles = {
     id: number,
-    featured: boolean,
+    featured?: boolean,
     title: string,
     url: string,
     imageUrl: string,
     newsSite: string,
     summary: string,
-    publishedAt: Date,
-    launches: [
+    publishedAt?: Date,
+    launches?: [
       {
         id: string,
         provider: string
       }
     ],
-    events: [
+    events?: [
       {
         id: string,
         provider: string
@@ -36,4 +36,13 @@ type GetAllArticlesOptions = {
 
 type GetArticleOptions = {
   id: number;
+}
+
+type UpdateArticleOptions = {
+  id?: number;
+  data?: Articles;
+}
+
+type RemoveArticeOptions = {
+  id?: number;
 }

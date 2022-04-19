@@ -1,10 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axiosInstance, { AxiosError } from 'axios';
-
-// 'https://spaceflight-backend.herokuapp.com'
+import { API_URL } from '../config';
 
 const config = {
-  baseURL: 'http://localhost:3008',
+  baseURL: API_URL ,
   headers: {
     'Content-Type': 'application/json',
   },
