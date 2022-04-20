@@ -31,27 +31,31 @@ export const CreateArticleModal = () => {
   const queryClient = new QueryClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { mutateAsync, isSuccess, isLoading } = useMutation("create-article", createArticles, {
-    onError: (err: any) => {
-      toast({
-        title: err || "Ocorreu um erro",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries('articles');
-      toast({
-        title: "Artigo criado com sucesso",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      onClose();
-      reset();
-    },
-  });
+  const { mutateAsync, isSuccess, isLoading } = useMutation(
+    "create-article",
+    createArticles,
+    {
+      onError: (err: any) => {
+        toast({
+          title: err || "Ocorreu um erro",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries("articles");
+        toast({
+          title: "Artigo criado com sucesso",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        onClose();
+        reset();
+      },
+    }
+  );
 
   const {
     handleSubmit,
@@ -84,10 +88,6 @@ export const CreateArticleModal = () => {
                   id="title"
                   {...register("title", {
                     required: "Campo obrigatório",
-                    minLength: {
-                      value: 4,
-                      message: "Minimum length should be 4",
-                    },
                   })}
                 />
                 <FormErrorMessage>
@@ -100,10 +100,6 @@ export const CreateArticleModal = () => {
                   id="newsSite"
                   {...register("newsSite", {
                     required: "Campo obrigatório",
-                    minLength: {
-                      value: 4,
-                      message: "Minimum length should be 4",
-                    },
                   })}
                 />
                 <FormErrorMessage>
@@ -116,10 +112,6 @@ export const CreateArticleModal = () => {
                   id="summary"
                   {...register("summary", {
                     required: "Campo obrigatório",
-                    minLength: {
-                      value: 4,
-                      message: "Minimum length should be 4",
-                    },
                   })}
                 />
                 <FormErrorMessage>
@@ -132,10 +124,6 @@ export const CreateArticleModal = () => {
                   id="url"
                   {...register("url", {
                     required: "This is required",
-                    minLength: {
-                      value: 4,
-                      message: "Minimum length should be 4",
-                    },
                   })}
                 />
                 <FormErrorMessage>
@@ -148,10 +136,6 @@ export const CreateArticleModal = () => {
                   id="imageUrl"
                   {...register("imageUrl", {
                     required: "This is required",
-                    minLength: {
-                      value: 4,
-                      message: "Minimum length should be 4",
-                    },
                   })}
                 />
                 <FormErrorMessage>
