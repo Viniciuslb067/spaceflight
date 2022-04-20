@@ -12,7 +12,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools position="bottom-left" />
         <BrowserRouter>{children}</BrowserRouter>
       </QueryClientProvider>
     </ChakraProvider>
